@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-from .core import PyMvola
+from .core import API

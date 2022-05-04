@@ -2,7 +2,7 @@
 
 import requests 
 
-class PyMvola :
+class API :
 
 
     def __init__(self,consumer_key,consumer_secret,statut="SANDBOX") -> None :

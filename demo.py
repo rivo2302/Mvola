@@ -1,4 +1,4 @@
-from PyMvola import PyMvola
+from PyMvola import API
 
-api = PyMvola("rivofoebg","obvuds")
+api = API("rivofoebg","obvuds")
 api.generate_token()
