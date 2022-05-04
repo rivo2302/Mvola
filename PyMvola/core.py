@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-
+import json
 import requests 
 
 class API :
-
 
     def __init__(self,consumer_key,consumer_secret,statut="SANDBOX") -> None :
 
@@ -27,8 +26,25 @@ class API :
         A function to generate a token for the Mvola API.
         """ 
         
-        url = 'https://devapi.mvola.mg/token' if self.type == "SANDBOX"  else "https://api.mvola.mg/token"
-        print(url)
+        url = 'https://api.mvola.mg/token' if self.type == "PRODUCTION"  else "https://devapi.mvola.mg/token"
+        
+        headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Cache-Control': 'no-cache',
+            'Authorization': f'Basic Base64({self.key}:{self.secret})'
+        }
+        data = {
+            'grant_type' : 'client_credentials',
+            'scope' : 'EXT_INT_MVOLA_SCOPE'
+        }
 
+        req = requests.post(
+            url ,
+            headers=headers ,
+            data=data
+        )
+        status_code = req.status_code
+        response = req.json()
+        print(response)
 
         
