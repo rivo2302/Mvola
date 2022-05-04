@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 import requests 
 
 class PyMvola :
+
 
     def __init__(self,consumer_key,consumer_secret,statut="SANDBOX") -> None :
 
