@@ -32,5 +32,3 @@ class PyMvola :
 
 
         
-api = PyMvola("rivofoebg","obvuds")
-api.generate_token()
