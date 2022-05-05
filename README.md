@@ -1,7 +1,7 @@
 </br>
 </br>
 
-# <p align="center"> PyMvola </p>
+# <p align="center"> pymvola </p>
 
 <p align="center"> 
     <img height="300" src="https://github.com/iTeam-S/Ampalibe/raw/main/docs/source/_static/ampalibe_logo.png">
@@ -9,13 +9,13 @@
 
 <div align="center"> 
 <p>
- <b>PyMvola</b> is a light Python Module for quickly configure your<a href="https://www.mvola.mg/devportal/"> Mvola API</a>.
+ <b>pymvola</b> is a light Python Module for quickly configure your<a href="https://www.mvola.mg/devportal/"> Mvola API</a>.
   <h4>
-        <a href="https://github.com/rivo2302/PyMvola/issues/">Documentation</a>
+        <a href="https://github.com/rivo2302/pymvola/issues/">Documentation</a>
         <span> | </span>
-        <a href="https://github.com/rivo2302/PyMvola/issues/">Report bugs</a>
+        <a href="https://github.com/rivo2302/pymvola/issues/">Report bugs</a>
         <span> | </span>
-        <a href="https://github.com/iTeam-S/PyMvola">Contribute</a>
+        <a href="https://github.com/iTeam-S/pymvola">Contribute</a>
  </h4>
 </p>
 <p>
@@ -39,7 +39,7 @@
 You can consult the link on pypi.org <a href="https://www.mvola.mg/devportal/"> Click here</a>.
 
 ```s
-pip install PyMvola==1.0.5
+pip install pymvola==1.0.5
 ```
 
 
@@ -52,8 +52,8 @@ pip install PyMvola==1.0.5
 Create your login and create your first application  <a href="https://www.mvola.mg/devportal/"> here </a>.
 After your create application , you should have Consummer_key and Consummer_secret.
 ```s
-# Import the module PyMvola
-from PyMvola import API
+# Import the module pymvola
+from pymvola import API
 
 # Initiate the api => API(Consummer_key, Consummer_secret)
 api = API("{consummer_key}","{consummer_secret}")

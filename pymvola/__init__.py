@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from .core import API
 
 data = { 
@@ -6,22 +7,24 @@ data = {
     "currency": "Ar", 
     "descriptionText": "TesteAPI",
     "requestingOrganisationTransactionReference": "trasactiondereference", 
-    "requestDate":"2022-05-05T15:55:00.567Z", 
+    "requestDate":"2022-05-05T18:55:00.567Z", 
     "originalTransactionReference": "originatex", 
-    "debitParty": [{
-        "key": "msisdn", 
-        "value": "0340921107"
-    } ], 
+    "debitParty": [
+        {
+            "key": "msisdn", 
+            "value": "0343500003"
+        } 
+    ], 
     "creditParty": [
         { 
             "key": "msisdn", 
-            "value":"0341372238"
+            "value":"0343500004"
         }
     ],
     "metadata": [
         {
             "key": "partnerName", 
-            "value":"{{companyName}}" 
+            "value":"Marketbot" 
         }, 
         { 
             "key": "fc", 

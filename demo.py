@@ -1,9 +1,11 @@
-# Import the module PyMvola
-from PyMvola import API
+# -*- coding: utf-8 -*-
+
+# Import the module pymvola
+from pymvola import Mvola
 
 # Initiate the api => API(Consummer_key, Consummer_secret)
 # api = API("{consummer_key}","{consummer_secret}")
-api = API("FB3XmEdDZMajm4VYh9sfLMLi2HQa","YFTPUch1sgq0lpqf1PCFhwfsR6wa")
+api = Mvola("0zL7eTrSEfXf6kkwJ53DSegCbBwa","pd8PIZYmeZaafifZgwHu1BC5ucMa")
 
 # Generate api's token => Return token if requests success  or error details if requests failed
 res = api.generate_token()
@@ -14,5 +16,5 @@ if res.success :
 else :
     print(f"[{res.status_code}] - {res.error}")
 
-
+api.transaction("tes",'bfvd')
 
