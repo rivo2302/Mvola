@@ -7,7 +7,7 @@ from .utils import ResultGetToken
 
 class API :
 
-    def __init__(self,consumer_key,consumer_secret,statut="SANDBOX") -> None :
+    def __init__(self,consumer_key :str, consumer_secret :str, status:str="SANDBOX") -> None :
 
         """
         An API that will make it easier for you to manage 
@@ -16,12 +16,12 @@ class API :
         Args:
             consumer_key ( str ): Consumer key of the application's API
             consumer_secret (str ): Consumer secret of the application's API
-            statut (str, optional): The status of your API (SANDBOX : Developer Mode / PRODUCTION : Api deployé). Defaults to "SANDBOX".
+            status (str, optional): The status of your API (SANDBOX : Developer Mode / PRODUCTION : Api deployé). Defaults to "SANDBOX".
         """
 
         self.key = consumer_key
         self.secret = consumer_secret
-        self.type = statut
+        self.type = status
         self.token = None
     
     def generate_token(self) :
@@ -71,3 +71,12 @@ class API :
         return res
         
     
+    def transaction (self,token:str) :
+        """
+        
+        A method to calculate initiate a transaction with your Mvola API.   
+
+        Args:
+            token ( str ): A validate token of your application.
+        """
+        print("r")
