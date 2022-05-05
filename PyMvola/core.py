@@ -22,9 +22,10 @@ class API :
         self.key = consumer_key
         self.secret = consumer_secret
         self.type = statut
+        self.token = None
     
     def generate_token(self) :
-        
+
         """
         A function to generate a token for the Mvola API.
         """    
@@ -65,6 +66,8 @@ class API :
 
         else :
             res.error = req.json()
+
         res.status_code = req.status_code
         return res
         
+    

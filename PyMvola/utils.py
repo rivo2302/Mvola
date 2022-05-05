@@ -8,5 +8,8 @@ class ResultGetToken :
         self.token = None
         self.status_code = None
     
+
     def __str__(self) :
         return  str(self.token)
+
+        
