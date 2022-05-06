@@ -5,8 +5,13 @@ import uuid
 import json
 
 class ResultAction :
+    """
+    Result Action 
 
+    The object to use for each API action (Generate token, transaction,..)
+    """
     def __init__(self) -> None:
+
         self.success =  False # True if the requests is success
         self.error =  None # Details if error occurs
         self.value = None # Content of the request's response
@@ -17,6 +22,11 @@ class ResultAction :
         return  str(self.token)
    
 class Transaction :
+    """Transaction
+
+    The object to use to facilitate error handling on data constraints
+    during transactions.
+    """
 
     def __init__ (self ,**kwargs) :
 

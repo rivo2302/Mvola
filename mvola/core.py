@@ -19,7 +19,6 @@ class Mvola :
             consumer_secret (str ): Consumer secret of the application's API
             status (str, optional): The status of your API (SANDBOX : Developer Mode / PRODUCTION : Api deployé). Defaults to "SANDBOX".
         """
-
         self.key = consumer_key
         self.secret = consumer_secret
         self.type = status
@@ -35,7 +34,6 @@ class Mvola :
         keys = f"{self.key}:{self.secret}"
         keys_bytes = keys.encode("ascii")
         encoded = base64.b64encode(keys_bytes).decode("utf-8") 
-
         headers = {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Cache-Control': 'no-cache',
@@ -71,22 +69,18 @@ class Mvola :
         res.status_code = req.status_code
         return res
         
-    
     def init_transaction (self,headers,dataJson) :
 
         """
-        
         A method to calculate initiate a transaction with your Mvola API.   
 
         Args:
-            token ( str ): A validate token of your application.
+            headers ( dict ): The headers of the post's requests.
+            dataJson ( dict ): The data that we will send on post's requests .
         """
 
         url = "https://devapi.mvola.mg/mvola/mm/transactions/type/merchantpay/1.0.0/"
-
-
         res = ResultAction()
-
         try :
             req = requests.post(
                 url ,
@@ -96,16 +90,13 @@ class Mvola :
         except Exception as e :
             res.error = e
             return res
-
         status_code = req.status_code
         if status_code in [200 , 202]:
             res.success = True
             response = req.json()
             res.value = response
-
         elif status_code in range (500,504) :
             res.error = {'error_description': 'Internal server errors.', 'error': 'server errors'}
-
         else :
             res.error = req.json()
 
