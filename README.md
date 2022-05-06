@@ -6,9 +6,9 @@
 
 <div align="center"> 
 <p>
-  A <b>light</b> Python module for quickly configure your <a href="https://www.mvola.mg/devportal/"> Mvola API</a>.
+  A <b>light</b> Python module for quickly configure your <a href="https://www.mvola.mg/devportal/"> API Mvola</a>.
   <h4>
-        <a href="mvola.mg/devportal/apis/5fb6b560-ef7e-49ad-b3c7-5335b7ca45f6/documents/">Documentation</a>
+        <a href="https://pypi.org/project/mvola/">Documentation</a>
         <span> | </span>
         <a href="https://github.com/rivo2302/Mvola/issues">Report bugs</a>
         <span> | </span>
@@ -43,7 +43,7 @@ pip install mvola==1.0.0
 
 
 #### Start the API 
-Create your login and create your first application  <a href="https://www.mvola.mg/devportal/">here</a>.
+Create your account <a href="https://www.mvola.mg/devportal/">here</a>.
 After your create application , you should have Consummer_key and Consummer_secret.
 
 ```python
