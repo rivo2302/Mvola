@@ -1,23 +1,21 @@
 # -*- coding: utf-8 -*-
 
 import setuptools
-# import pymvola
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-
 setuptools.setup(
-    name="pymvola", # This is the name of the package
+    name="mvola", # This is the name of the package
     version="1.0.0", # The initial release version
     author="rivo2302",                         # Full name of the author
-    description="pymvola is a light open source module for Mvola API.",
+    description="Mvola is a light open source module for quicly configure your Mvola API.",
     long_description=long_description,  # Long description read from the readme
     long_description_content_type="text/markdown",
     project_urls={
-        'Homepage': 'https://github.com/rivo2302/pymvola',
+        'Homepage': 'https://github.com/rivo2302/Mvola',
     },
-    packages=['pymvola'],  # List of all modules to be installed
+    packages=['mvola'],  # List of all modules to be installed
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",
@@ -28,7 +26,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],  # Information to filter the project on PyPi website
     python_requires='>=3.7',
-    py_modules=["pymvola"], # Name of the python package
+    py_modules=["mvola"], # Name of the python package
     install_requires=[
         "requests"
     ],  # depandance
