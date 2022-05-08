@@ -69,7 +69,7 @@ class Mvola :
         res.status_code = req.status_code
         return res
         
-    def init_transaction (self,headers,dataJson) :
+    def init_transaction (self,transaction) :
 
         """
         A method to calculate initiate a transaction with your Mvola API.   
@@ -81,11 +81,37 @@ class Mvola :
 
         url = "https://devapi.mvola.mg/mvola/mm/transactions/type/merchantpay/1.0.0/"
         res = ResultAction()
+        data = transaction.dataJson
+
+        if not data.get("amount") :
+            raise ValueError("[amount] Required fields on init_transaction")
+
+        if not data.get("descriptionText") :
+            raise ValueError("[descriptionText] Required fields on init_transaction")
+        
+        if not data.get("requestDate") :
+            raise ValueError("[requestDate] Required fields on init_transaction")
+
+        if not data["debitParty"][0].get("value") :
+            raise ValueError("[debit] Required fields on init_transaction")
+
+        if not data["creditParty"][0].get("value") :
+            raise ValueError("[credit] Required fields on init_transaction")
+
+        if not data.get("originalTransactionReference") :
+            raise ValueError("[originalTransactionReference] Required fields on init_transaction")
+
+        if not data.get("requestingOrganisationTransactionReference"):
+            raise ValueError("[requestingOrganisationTransactionReference] Required fields on init_transaction")
+
+        for k, v in dict(data).items():
+            if k not in ["amount","currency","descriptionText","requestDate","originalTransactionReference","debitParty","creditParty","metadata","requestingOrganisationTransactionReference"]:
+                del data[k]
         try :
             req = requests.post(
                 url ,
-                headers=headers,
-                data=json.dumps(dataJson)
+                headers=transaction.headers,
+                data=json.dumps(data)
             )
         except Exception as e :
             res.error = e
@@ -99,8 +125,42 @@ class Mvola :
             res.error = {'error_description': 'Internal server errors.', 'error': 'server errors'}
         else :
             res.error = req.json()
-
         res.status_code = req.status_code
         return res
         
+    def status_transaction(self,transaction) :
+
+        """
+        Status of transaction
+
+        Args:
+            transaction (_type_): _description_
+        """
+
+        url = "https://devapi.mvola.mg/mvola/mm/transactions/type/merchantpay/1.0.0/status/"
+        res = ResultAction()
+
+        data = transaction.dataJson
+        if not data.get("serverCorrelationId") :
+            raise ValueError("[serverCorrelationId] Required fields on status_transaction")
         
+        url = f"{url}/{data.get('serverCorrelationId')}"
+        try :
+            req = requests.get(
+                url ,
+                headers=transaction.headers
+            )
+        except Exception as e :
+            res.error = e
+            return res
+        status_code = req.status_code
+        if status_code in [200 , 202]:
+            res.success = True
+            response = req.json()
+            res.value = response
+        elif status_code in range (500,504) :
+            res.error = {'error_description': 'Internal server errors.', 'error': 'server errors'}
+        else :
+            res.error = req.json()
+        res.status_code = req.status_code
+        return res

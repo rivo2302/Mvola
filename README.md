@@ -51,7 +51,7 @@ After your create application , you should have Consummer_key and Consummer_secr
 from mvola import Mvola
 
 # Initiate the api => API(Consummer_key, Consummer_secret)
-api = API("{consummer_key}","{consummer_secret}")
+api = Mvola("{consummer_key}","{consummer_secret}")
 
 ```
 
