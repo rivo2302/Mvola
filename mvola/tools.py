@@ -8,7 +8,7 @@ class ResultAction :
     """
     Result Action 
 
-    The object to use for each API action (Generate token, transaction,..)
+    The object to use for each API action (Generate token, Initiate transaction, status transaction,...)
     """
     def __init__(self) -> None:
 
@@ -20,17 +20,17 @@ class ResultAction :
 
     def __str__(self) :
         return  json.dumps({
-            "Success" : self.success,
-            "Error" : self.error,
-            "Status code" : self.status_code,
-            "Value" : self.value
-        },indent=4)
+                "Success" : self.success,
+                "Error" : self.error,
+                "Status code" : self.status_code,
+                "Value" : self.value
+            },indent=4)
    
 class Transaction :
     """Transaction
 
-    The object to use to facilitate error handling on data constraints
-    during transactions.
+        The object to use to check easier error handling on data constraints
+        during each transactions.
     """
 
     def __init__ (self ,**kwargs) :
@@ -77,7 +77,6 @@ class Transaction :
                 
         if re.match((r'^[0-9]{10}$'), self.UserAccountIdentifier) is  None:
             raise ValueError("[UserAccountIdentifier] MerchantNumber: the company phone number ex : 0343500004") 
-        
 
         if self.descriptionText :
             if re.match((r'^[A-Za-z0-9_\-.,;\']{0,50}$'), self.descriptionText) is  None :
@@ -105,7 +104,7 @@ class Transaction :
 
     @property
     def headers(self) :
-        header = {
+        data = {
             'Authorization': f'Bearer {self.token}',
             'Version': '1.0',
             'UserLanguage': str(self.UserLanguage).upper(),
@@ -116,10 +115,10 @@ class Transaction :
             'Cache-Control': 'no-cache',
             'X-Callback-URL': str(self.X_Callback_URL) if self.X_Callback_URL else None
         }
-        for k, v in dict(header).items():
+        for k, v in dict(data).items():
             if v is None:
-                del header[k]
-        return header
+                del data[k]
+        return data
              
     @property
     def dataJson(self):
@@ -142,8 +141,8 @@ class Transaction :
                 ],
                 "metadata": [
                     {
-                            "key": "partnerName", 
-                            "value": str(self.partnerName) if self.partnerName else None
+                        "key": "partnerName", 
+                        "value": str(self.partnerName) if self.partnerName else None
                     }, 
                     { 
                         "key": "fc", 
@@ -159,13 +158,11 @@ class Transaction :
         for k, v in dict(data).items():
             if v is None:
                 del data[k]
-            
+
         return data
     
     def __str__(self) :
-        return str("Main class for transaction.")
-
-
-#  
-        
-
+        return json.dumps({
+            headers : self.headers ,
+            dataJson : self.data
+        })

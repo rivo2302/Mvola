@@ -27,7 +27,9 @@ class Mvola :
     def generate_token(self) :
 
         """
+
         A function to generate a token for the Mvola API.
+
         """    
         url = 'https://api.mvola.mg/token' if self.type == "PRODUCTION"  else "https://devapi.mvola.mg/token"
         
@@ -75,8 +77,7 @@ class Mvola :
         A method to calculate initiate a transaction with your Mvola API.   
 
         Args:
-            headers ( dict ): The headers of the post's requests.
-            dataJson ( dict ): The data that we will send on post's requests .
+            transaction ( object : Transaction ): An instance of Transaction class.
         """
 
         url = "https://devapi.mvola.mg/mvola/mm/transactions/type/merchantpay/1.0.0/"
@@ -84,25 +85,25 @@ class Mvola :
         data = transaction.dataJson
 
         if not data.get("amount") :
-            raise ValueError("[amount] Required fields on init_transaction")
+            raise ValueError("[amount] Required fields on action : init_transaction")
 
         if not data.get("descriptionText") :
-            raise ValueError("[descriptionText] Required fields on init_transaction")
+            raise ValueError("[descriptionText] Required fields on action : init_transaction")
         
         if not data.get("requestDate") :
-            raise ValueError("[requestDate] Required fields on init_transaction")
+            raise ValueError("[requestDate] Required fields on action : init_transaction")
 
         if not data["debitParty"][0].get("value") :
-            raise ValueError("[debit] Required fields on init_transaction")
+            raise ValueError("[debit] Required fields on action : init_transaction")
 
         if not data["creditParty"][0].get("value") :
-            raise ValueError("[credit] Required fields on init_transaction")
+            raise ValueError("[credit] Required fields on action : init_transaction")
 
         if not data.get("originalTransactionReference") :
-            raise ValueError("[originalTransactionReference] Required fields on init_transaction")
+            raise ValueError("[originalTransactionReference] Required fields on action : init_transaction")
 
         if not data.get("requestingOrganisationTransactionReference"):
-            raise ValueError("[requestingOrganisationTransactionReference] Required fields on init_transaction")
+            raise ValueError("[requestingOrganisationTransactionReference] Required fields on acion : init_transaction")
 
         for k, v in dict(data).items():
             if k not in ["amount","currency","descriptionText","requestDate","originalTransactionReference","debitParty","creditParty","metadata","requestingOrganisationTransactionReference"]:
@@ -134,7 +135,7 @@ class Mvola :
         Status of transaction
 
         Args:
-            transaction (_type_): _description_
+            transaction ( object : Transaction ): An instance of Transaction class.
         """
 
         url = "https://devapi.mvola.mg/mvola/mm/transactions/type/merchantpay/1.0.0/status/"
@@ -142,7 +143,7 @@ class Mvola :
 
         data = transaction.dataJson
         if not data.get("serverCorrelationId") :
-            raise ValueError("[serverCorrelationId] Required fields on status_transaction")
+            raise ValueError("[serverCorrelationId] Required fields on action : status_transaction")
         
         url = f"{url}/{data.get('serverCorrelationId')}"
         try :
@@ -153,14 +154,18 @@ class Mvola :
         except Exception as e :
             res.error = e
             return res
+
         status_code = req.status_code
         if status_code in [200 , 202]:
             res.success = True
             response = req.json()
             res.value = response
+
         elif status_code in range (500,504) :
             res.error = {'error_description': 'Internal server errors.', 'error': 'server errors'}
+
         else :
             res.error = req.json()
+            
         res.status_code = req.status_code
         return res
