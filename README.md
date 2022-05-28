@@ -99,14 +99,14 @@ from mvola.tools import Transaction
 
 transaction = Transaction(
     token="{{token}}", # [Token] Requiered fields
-    UserLanguage="FR", # MG or FR
-    UserAccountIdentifier="0343500003", # [UserAccountIdentifier] Requiered fields 
-    partnerName="Marketbot", # Name of your application
+    user_language="FR", # MG or FR
+    user_account_identifier="0343500003", # [UserAccountIdentifier] Requiered fields 
+    partner_name="Marketbot", # Name of your application
     amount="1500",
-    X_Callback_URL="https://2809-102-16-43-64.ngrok.io", # Webhook link for client , Mvola sends requests in this links once the transaction is finished 
+    x_callback_url="https://2809-102-16-43-64.ngrok.io", # Webhook link for client , Mvola sends requests in this links once the transaction is finished 
     currency="Ar", # Possible Values : Ar only
-    descriptionText="Unedescription", # String (len<40Characters)without special character
-    requestDate="2022-05-06T02:14:59.567Z", # Respect the consraints as in this example
+    description_text="Unedescription", # String (len<40Characters)without special character
+    request_date="2022-05-06T02:14:59.567Z", # Respect the consraints as in this example
     debit="0343500003", # [Debit] Required fields | Phone number of subscriber .In preprod it’s fixed: 034350003 or 0343500004
     credit="0343500004",  # [Credit] Required fields | Phone number of merchant. In preprod it’s fixed: 034350003 or 0343500004
 )
@@ -149,10 +149,10 @@ from mvola.tools import Transaction
 
 transaction = Transaction(
     token="{{token}}", # [Token] Requiered fields
-    UserLanguage="FR", # MG or FR
-    UserAccountIdentifier="0343500003", # [UserAccountIdentifier] Requiered fields 
-    partnerName="Marketbot", # Name of your application
-    serverCorrelationId='c8e9e922-b965-4515-b390-137b41c9f40b' , # The response when you initiate transaction
+    user_language="FR", # MG or FR
+    user_account_identifier="0343500003", # [UserAccountIdentifier] Requiered fields 
+    partner_name="Marketbot", # Name of your application
+    server_correlation_id='c8e9e922-b965-4515-b390-137b41c9f40b' , # The response when you initiate transaction
 )
 
 # Status of  transaction

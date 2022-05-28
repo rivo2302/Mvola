@@ -8,21 +8,21 @@ from .tools import ResultAction
 
 class Mvola :
 
-    def __init__(self,consumer_key :str, consumer_secret :str, status:str="SANDBOX") :
+    def __init__(self,consumer_key:str,consumer_secret:str,status:str="SANDBOX",token:str=None) :
 
         """
-        An API that will make it easier for you to manage 
-        your Mvola API.
+            An API that will make it easier for you to manage 
+            your Mvola API.
 
-        Args:
-            consumer_key ( str ): Consumer key of the application's API
-            consumer_secret (str ): Consumer secret of the application's API
-            status (str, optional): The status of your API (SANDBOX : Developer Mode / PRODUCTION : Api deployé). Defaults to "SANDBOX".
+            Args:
+                consumer_key ( str ): Consumer key of the application's API
+                consumer_secret (str ): Consumer secret of the application's API
+                status (str, optional): The status of your API (SANDBOX : Developer Mode / PRODUCTION : Api deployé). Defaults to "SANDBOX".
         """
         self.key = consumer_key
         self.secret = consumer_secret
         self.type = status
-        self.token = None
+        self.token = token
     
     def generate_token(self) :
 
@@ -71,27 +71,27 @@ class Mvola :
         res.status_code = req.status_code
         return res
         
+        
     def init_transaction (self,transaction) :
 
         """
-        A method to calculate initiate a transaction with your Mvola API.   
+            A method to calculate initiate a transaction with your Mvola API.   
 
-        Args:
-            transaction ( object : Transaction ): An instance of Transaction class.
+            Args:
+                transaction ( object : Transaction ): An instance of Transaction class.
         """
 
         url = "https://devapi.mvola.mg/mvola/mm/transactions/type/merchantpay/1.0.0/"
         res = ResultAction()
         data = transaction.dataJson
-
         if not data.get("amount") :
             raise ValueError("[amount] Required fields on action : init_transaction")
 
         if not data.get("descriptionText") :
-            raise ValueError("[descriptionText] Required fields on action : init_transaction")
+            raise ValueError("[description_text] Required fields on action : init_transaction")
         
         if not data.get("requestDate") :
-            raise ValueError("[requestDate] Required fields on action : init_transaction")
+            raise ValueError("[description_text] Required fields on action : init_transaction")
 
         if not data["debitParty"][0].get("value") :
             raise ValueError("[debit] Required fields on action : init_transaction")
@@ -100,10 +100,10 @@ class Mvola :
             raise ValueError("[credit] Required fields on action : init_transaction")
 
         if not data.get("originalTransactionReference") :
-            raise ValueError("[originalTransactionReference] Required fields on action : init_transaction")
+            raise ValueError("[original_transaction_reference] Required fields on action : init_transaction")
 
         if not data.get("requestingOrganisationTransactionReference"):
-            raise ValueError("[requestingOrganisationTransactionReference] Required fields on acion : init_transaction")
+            raise ValueError("[requesting_organisation_transaction_reference] Required fields on acion : init_transaction")
 
         for k, v in dict(data).items():
             if k not in ["amount","currency","descriptionText","requestDate","originalTransactionReference","debitParty","creditParty","metadata","requestingOrganisationTransactionReference"]:
@@ -132,10 +132,10 @@ class Mvola :
     def status_transaction(self,transaction) :
 
         """
-        Status of transaction
+            Status of transaction
 
-        Args:
-            transaction ( object : Transaction ): An instance of Transaction class.
+            Args:
+                transaction ( object : Transaction ): An instance of Transaction class.
         """
 
         url = "https://devapi.mvola.mg/mvola/mm/transactions/type/merchantpay/1.0.0/status/"
@@ -143,7 +143,7 @@ class Mvola :
 
         data = transaction.dataJson
         if not data.get("serverCorrelationId") :
-            raise ValueError("[serverCorrelationId] Required fields on action : status_transaction")
+            raise ValueError("[server_correlation_id] Required fields on action : status_transaction")
         
         url = f"{url}/{data.get('serverCorrelationId')}"
         try :
@@ -166,6 +166,6 @@ class Mvola :
 
         else :
             res.error = req.json()
-            
+
         res.status_code = req.status_code
         return res

@@ -17,6 +17,8 @@ class ResultAction :
         self.value = None # Content of the request's response
         self.token = None # The value of token
         self.status_code = None # The status code the requests
+        self.headers = None,
+        self.data = None,
 
     def __str__(self) :
         return  json.dumps({
@@ -27,7 +29,8 @@ class ResultAction :
             },indent=4)
    
 class Transaction :
-    """Transaction
+    """
+        Transaction
 
         The object to use to check easier error handling on data constraints
         during each transactions.
@@ -38,35 +41,35 @@ class Transaction :
         #Headers 
         self.correlation_id = str(uuid.uuid1())
         self.token = kwargs.get("token")
-        self.UserLanguage = kwargs.get("UserLanguage","FR")
-        self.UserAccountIdentifier = kwargs.get("UserAccountIdentifier")
-        self.partnerName = kwargs.get("partnerName")
-        self.X_Callback_URL = kwargs.get("X_Callback_URL")
+        self.user_language = kwargs.get("user_language","FR")
+        self.user_account_identifier = kwargs.get("user_account_identifier")
+        self.partner_name = kwargs.get("partner_name")
+        self.x_callback_url = kwargs.get("x_callback_url")
 
         # Data Json 
         self.amount = kwargs.get("amount")
         self.currency = kwargs.get("currency", "Ar")
-        self.descriptionText = kwargs.get("descriptionText")
-        self.requestingOrganisationTransactionReference = kwargs.get("requestingOrganisationTransactionReference")
-        self.requestDate = kwargs.get("requestDate")
-        self.originalTransactionReference = kwargs.get("originalTransactionReference")
+        self.description_text = kwargs.get("description_text")
+        self.requesting_organisation_transaction_reference = kwargs.get("requesting_organisation_transaction_reference")
+        self.request_date = kwargs.get("request_date")
+        self.original_transaction_reference = kwargs.get("original_transaction_reference")
         self.debit = kwargs.get("debit")
         self.credit = kwargs.get("credit")
         self.fc = kwargs.get("fc","USD")
-        self.amountFc = kwargs.get("amountFc","1")
-        self.serverCorrelationId = kwargs.get("serverCorrelationId")
+        self.amount_fc = kwargs.get("amount_fc","1")
+        self.server_correlation_id = kwargs.get("server_correlation_id")
 
         if not self.token :
-            raise ValueError("[Token] Required fields | MerchantNumber: the company phone number ex : 0343500004")
+            raise ValueError("[token] Required fields | MerchantNumber: the company phone number ex : 0343500004")
 
-        if not self.UserAccountIdentifier :
-            raise ValueError("[UserAccountIdentifier] Required fields ")
+        if not self.user_account_identifier :
+            raise ValueError("[user_account_identifier] Required field")
 
-        if self.UserLanguage.upper() not in ('FR','MG'):
-            raise ValueError("[UserLanguage] FR or MG")
+        if self.user_language.upper() not in ('FR','MG'):
+            raise ValueError("[user_language] FR or MG")
 
-        if not self.partnerName :
-            raise ValueError("[partnerName] Required fields")
+        if not self.partner_name :
+            raise ValueError("[partner_name] Required field")
 
         if self.amount :
             if not str(self.amount).isdigit() :     
@@ -75,24 +78,24 @@ class Transaction :
         if str(self.currency).capitalize() != 'Ar' :
             raise ValueError("[Currency] code of the transaction - Possible Values : Ar")
                 
-        if re.match((r'^[0-9]{10}$'), self.UserAccountIdentifier) is  None:
+        if re.match((r'^[0-9]{10}$'), self.user_account_identifier) is  None:
             raise ValueError("[UserAccountIdentifier] MerchantNumber: the company phone number ex : 0343500004") 
 
-        if self.descriptionText :
-            if re.match((r'^[A-Za-z0-9_\-.,;\']{0,50}$'), self.descriptionText) is  None :
-                raise ValueError("[Description] on transaction. At most 50 characters long without special character except : “-”, “.”, “_”, “,”")
+        if self.description_text :
+            if re.match((r'^[A-Za-z0-9_\-.,;\']{0,50}$'), self.description_text) is  None :
+                raise ValueError("[description_text] on transaction. At most 50 characters long without special character except : “-”, “.”, “_”, “,”")
         
-        if self.requestingOrganisationTransactionReference :
-            if re.match((r'^[A-Za-z0-9_\-.,;\']{0,50}$'), self.requestingOrganisationTransactionReference) is  None   :
+        if self.requesting_organisation_transaction_reference :
+            if re.match((r'^[A-Za-z0-9_\-.,;\']{0,50}$'), self.requesting_organisation_transaction_reference) is  None   :
                 raise ValueError("Transaction ID of client side. At most 50 characters long without special Character except : “-”, “.”, “_”, “,”")
 
-        if self.originalTransactionReference :
-            if re.match((r'^[A-Za-z0-9_\-.,;\']{0,50}$'), self.originalTransactionReference) is  None   :
+        if self.original_transaction_reference :
+            if re.match((r'^[A-Za-z0-9_\-.,;\']{0,50}$'), self.original_transaction_reference) is  None   :
                 raise ValueError("Transaction ID of client side. At most 50 characters long without special Character except : “-”, “.”, “_”, “,”") 
 
-        if self.requestDate :
-            if re.match((r'^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{2,3}Z$'), self.requestDate) is  None:
-                raise ValueError("[requestDate]Transaction requested date by client - yyyy-MM-ddTHH:mm:ss.SSSZ format ,  example = 2022-05-05T21:14:59.567Z")
+        if self.request_date :
+            if re.match((r'^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{2,3}Z$'), self.request_date) is  None:
+                raise ValueError("[request_date]Transaction requested date by client - yyyy-MM-ddTHH:mm:ss.SSSZ format ,  example = 2022-05-05T21:14:59.567Z")
 
         if self.debit :
             if re.match((r'^[0-9]{10}$'), self.debit) is  None: 
@@ -107,13 +110,13 @@ class Transaction :
         data = {
             'Authorization': f'Bearer {self.token}',
             'Version': '1.0',
-            'UserLanguage': str(self.UserLanguage).upper(),
+            'UserLanguage': str(self.user_language).upper(),
             'X-CorrelationID': self.correlation_id,
-            'UserAccountIdentifier': f'msisdn;{self.UserAccountIdentifier}',
-            'partnerName': self.partnerName,
+            'UserAccountIdentifier': f'msisdn;{self.user_account_identifier}',
+            'partnerName': self.partner_name,
             'Content-Type': 'application/json',
             'Cache-Control': 'no-cache',
-            'X-Callback-URL': str(self.X_Callback_URL) if self.X_Callback_URL else None
+            'X-Callback-URL': str(self.x_callback_url) if self.x_callback_url else None
         }
         for k, v in dict(data).items():
             if v is None:
@@ -125,10 +128,10 @@ class Transaction :
         data = { 
                 "amount": str(self.amount) if self.amount else None, 
                 "currency": str(self.currency).capitalize(), 
-                "descriptionText": str(self.descriptionText) if self.descriptionText else None,
-                "requestingOrganisationTransactionReference": str(self.requestingOrganisationTransactionReference) if self.requestingOrganisationTransactionReference else None , 
-                "requestDate":str(self.requestDate) if self.requestDate else None, 
-                "originalTransactionReference": str(self.originalTransactionReference) if self.originalTransactionReference else None, 
+                "descriptionText": str(self.description_text) if self.description_text else None,
+                "requestingOrganisationTransactionReference": str(self.requesting_organisation_transaction_reference) if self.requesting_organisation_transaction_reference else None , 
+                "requestDate":str(self.request_date) if self.request_date else None, 
+                "originalTransactionReference": str(self.original_transaction_reference) if self.original_transaction_reference else None, 
                 "debitParty": [{
                     "key": "msisdn", 
                     "value": str(self.debit) if self.debit else None
@@ -142,7 +145,7 @@ class Transaction :
                 "metadata": [
                     {
                         "key": "partnerName", 
-                        "value": str(self.partnerName) if self.partnerName else None
+                        "value": str(self.partner_name) if self.partner_name else None
                     }, 
                     { 
                         "key": "fc", 
@@ -150,10 +153,10 @@ class Transaction :
                     }, 
                     { 
                         "key": "amountFc", 
-                        "value": self.amountFc 
+                        "value": self.amount_fc 
                     } 
                 ],
-                "serverCorrelationId" : str(self.serverCorrelationId) if self.serverCorrelationId else None
+                "serverCorrelationId" : str(self.server_correlation_id) if self.server_correlation_id else None
             }
         for k, v in dict(data).items():
             if v is None:
@@ -163,6 +166,6 @@ class Transaction :
     
     def __str__(self) :
         return json.dumps({
-            headers : self.headers ,
-            dataJson : self.data
+            'headers' : self.headers ,
+            'dataJson' : self.dataJson
         })
