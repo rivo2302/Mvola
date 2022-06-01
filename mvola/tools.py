@@ -14,7 +14,7 @@ class ResultAction :
 
         self.success =  False # True if the requests is success
         self.error =  None # Details if error occurs
-        self.value = None # Content of the request's response
+        self.response = None # Content of the request's response
         self.token = None # The value of token
         self.status_code = None # The status code the requests
         self.headers = None,
@@ -25,7 +25,7 @@ class ResultAction :
                 "Success" : self.success,
                 "Error" : self.error,
                 "Status code" : self.status_code,
-                "Value" : self.value
+                "response" : self.response
             },indent=4)
    
 class Transaction :
@@ -58,6 +58,7 @@ class Transaction :
         self.fc = kwargs.get("fc","USD")
         self.amount_fc = kwargs.get("amount_fc","1")
         self.server_correlation_id = kwargs.get("server_correlation_id")
+        self.transid = kwargs.get("transid")
 
         if not self.token :
             raise ValueError("[token] Required fields | MerchantNumber: the company phone number ex : 0343500004")
@@ -156,7 +157,8 @@ class Transaction :
                         "value": self.amount_fc 
                     } 
                 ],
-                "serverCorrelationId" : str(self.server_correlation_id) if self.server_correlation_id else None
+                "serverCorrelationId" : str(self.server_correlation_id) if self.server_correlation_id else None,
+                "transid" : str(self.transid) if self.transid else None
             }
         for k, v in dict(data).items():
             if v is None:

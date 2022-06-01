@@ -22,6 +22,8 @@ class Mvola :
         self.secret = consumer_secret
         self.type = status
         self.token = token
+        
+        self.url = 'https://api.mvola.mg' if self.type == "PRODUCTION"  else "https://devapi.mvola.mg"
     
     def generate_token(self) :
 
@@ -30,8 +32,8 @@ class Mvola :
         A function to generate a token for the Mvola API.
 
         """    
-        url = 'https://api.mvola.mg/token' if self.type == "PRODUCTION"  else "https://devapi.mvola.mg/token"
-        
+
+        url = f'{self.url}/token'        
         keys = f"{self.key}:{self.secret}"
         keys_bytes = keys.encode("ascii")
         encoded = base64.b64encode(keys_bytes).decode("utf-8") 
@@ -58,8 +60,8 @@ class Mvola :
         if status_code == 200:
             res.success = True
             response = req.json()
-            res.value = response
-            res.token = response["access_token"]
+            res.response = response
+            res.response = response["access_token"]
 
         elif status_code in range (500,504) :
             res.error = {'error_description': 'Internal server errors.', 'error': 'server errors'}
@@ -78,7 +80,7 @@ class Mvola :
             Args:
                 transaction ( object : Transaction ): An instance of Transaction class.
         """
-        url = "https://devapi.mvola.mg/mvola/mm/transactions/type/merchantpay/1.0.0/"
+        url = f'{self.url}/mvola/mm/transactions/type/merchantpay/1.0.0/'
         res = ResultAction()
         data = transaction.dataJson
         if not data.get("amount") :
@@ -118,7 +120,7 @@ class Mvola :
         if status_code in [200 , 202]:
             res.success = True
             response = req.json()
-            res.value = response
+            res.response = response
         elif status_code in range (500,504) :
             res.error = {'error_description': 'Internal server errors.', 'error': 'server errors'}
         else :
@@ -135,7 +137,7 @@ class Mvola :
                 transaction ( object : Transaction ): An instance of Transaction class.
         """
 
-        url = "https://devapi.mvola.mg/mvola/mm/transactions/type/merchantpay/1.0.0/status/"
+        url = f'{self.url}/mvola/mm/transactions/type/merchantpay/1.0.0/status/'
         res = ResultAction()
 
         data = transaction.dataJson
@@ -156,7 +158,7 @@ class Mvola :
         if status_code in [200 , 202]:
             res.success = True
             response = req.json()
-            res.value = response
+            res.response = response
 
         elif status_code in range (500,504) :
             res.error = {'error_description': 'Internal server errors.', 'error': 'server errors'}
@@ -167,3 +169,42 @@ class Mvola :
         res.status_code = req.status_code
         return res
     
+    
+    def details_transaction(self,transaction) :
+
+        """
+            details of transaction
+
+            Args:
+                transaction ( object : Transaction ): An instance of Transaction class.
+        """
+        url = f'{self.url}/mvola/mm/transactions/type/merchantpay/1.0.0'
+        res = ResultAction()
+        data = transaction.dataJson
+        
+        if not data.get("transid") :
+            raise ValueError("[transid] Required fields on acion : details of transaction")
+        
+        try :
+            req = requests.get(
+                f'{url}/{data.get("transid")}',
+                headers=transaction.headers
+            )
+        except Exception as e :
+            res.error = e
+            return res
+
+        status_code = req.status_code
+        if status_code in [200 , 202]:
+            res.success = True
+            response = req.json()
+            res.response = response
+
+        elif status_code in range (500,504) :
+            res.error = {'error_description': 'Internal server errors.', 'error': 'server errors'}
+
+        else :
+            res.error = req.json()
+
+        res.status_code = req.status_code
+        return res

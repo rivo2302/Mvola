@@ -3,7 +3,6 @@
 <p align="center"> 
     <img height="400" src="https://raw.githubusercontent.com/rivo2302/Mvola/master/assets/icon.png">
 </p>
-
 <div align="center"> 
     <p>
         A <b>light</b> Python module for your <a href="https://www.mvola.mg/devportal/"> API Mvola </a>.
@@ -34,7 +33,7 @@
 You can consult the link on pypi.org <a href="https://pypi.org/project/mvola/">here</a> for mode documentation.
 
 ```s
-pip install mvola==1.0.1
+pip install mvola==1.0.2
 ```
 
 ## USAGE 
@@ -50,13 +49,16 @@ After you create application , you should have Consummer_key and Consummer_secre
 from mvola import Mvola
 
 # Initiate the api => API(Consummer_key, Consummer_secret)
-api = Mvola("{consummer_key}","{consummer_secret}")
+api = Mvola("{{consummer_key}}","{{consummenr_secret}}")
 ```
 
 ### Generate token
 Check the documentation <a href="https://www.mvola.mg/devportal/apis/5fb6b560-ef7e-49ad-b3c7-5335b7ca45f6/documents/89b6b1d0-b3c9-4758-a548-47889825bc68"> here</a>
 
 ```python
+from mvola import Mvola
+api = Mvola("{{consummer_key}}","{{consummenr_secret}}")
+
 res = api.generate_token()
 if res.success :
     api.token = res
@@ -115,7 +117,7 @@ transaction = Transaction(
 res = api.init_transaction(transaction)
 
 if res.success :
-    print(res.value)
+    print(res.response)
 else :
     print(f"Status_code [{res.status_code}] \n {res.error}")
 ```
@@ -145,21 +147,22 @@ else :
 Check the documentation <a href="https://www.mvola.mg/devportal/apis/5fb6b560-ef7e-49ad-b3c7-5335b7ca45f6/documents/b36ca2a3-f339-43a1-88d3-bbee6c77b06f"> here</a>
 
 ```python
+
 from mvola.tools import Transaction
 
 transaction = Transaction(
-    token="{{token}}", # [Token] Requiered fields
+    token="{{token}}", # [Token] Required fields
     user_language="FR", # MG or FR
-    user_account_identifier="0343500003", # [UserAccountIdentifier] Requiered fields 
+    user_account_identifier="0343500003", # [UserAccountIdentifier] Required fields 
     partner_name="Marketbot", # Name of your application
-    server_correlation_id='c8e9e922-b965-4515-b390-137b41c9f40b' , # The response when you initiate transaction
+    server_correlation_id='c8e9e922-b965-4515-b390-137b41c9f40b' , # [server_correlation_id] Required fields , The response when you initiate transaction
 )
 
 # Status of  transaction
-res = api.init_transaction(transaction)
+res = api.status_transaction(transaction)
 
 if res.success :
-    print(res.value)
+    print(res.response)
 else :
     print(f"Status_code [{res.status_code}] \n {res.error}")
 ```
@@ -183,6 +186,68 @@ else :
         'notificationMethod': '', 
         'objectReference': ''
     }
+```
+
+
+#### Details of Transaction
+Check the documentation <a href="https://www.mvola.mg/devportal/apis/5fb6b560-ef7e-49ad-b3c7-5335b7ca45f6/documents/b36ca2a3-f339-43a1-88d3-bbee6c77b06f"> here</a>
+
+```python
+from mvola.tools import Transaction
+
+transaction = Transaction(
+    token="eyJ4NXQiOiJPRE5tWkRFMll6UTRNVEkxTVRZME1tSmhaR00yTUdWa1lUZGhOall5TWpnM01XTmpNalJqWWpnMll6bGpNRGRsWWpZd05ERmhZVGd6WkRoa1lUVm1OZyIsImtpZCI6Ik9ETm1aREUyWXpRNE1USTFNVFkwTW1KaFpHTTJNR1ZrWVRkaE5qWXlNamczTVdOak1qUmpZamcyWXpsak1EZGxZall3TkRGaFlUZ3paRGhrWVRWbU5nX1JTMjU2IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiJyaXZvMjMwMkBnbWFpbC5jb21AY2FyYm9uLnN1cGVyIiwiYXV0IjoiQVBQTElDQVRJT04iLCJhdWQiOiIwekw3ZVRyU0VmWGY2a2t3SjUzRFNlZ0NiQndhIiwibmJmIjoxNjU0MTA4ODg2LCJhenAiOiIwekw3ZVRyU0VmWGY2a2t3SjUzRFNlZ0NiQndhIiwic2NvcGUiOiJFWFRfSU5UX01WT0xBX1NDT1BFIiwiaXNzIjoiaHR0cHM6XC9cL2FwaW0ucHJlcC50ZWxtYS5tZzo5NDQzXC9vYXV0aDJcL3Rva2VuIiwiZXhwIjoxNjU0MTEyNDg2LCJpYXQiOjE2NTQxMDg4ODYsImp0aSI6IjVlOGY5ZjFhLWUxODItNGZkMS04ZjUyLWU2YTIzMzljYTIzMCJ9.voIBGWbGiI7vFklcmHiufu5fW1UvlE79c7MNOZZisuGD7HQ8P4CFljBhbQQj8lHnd8u48KFdLxHWwg4SozDejPlTFmeDdHaE8UoYhTsVthYgG5eKN3ZSQ0LSyYyeLbxA25vssvVSkQBCX-4EtcrH_vgEnZiJotBqD8PhicuwtvJuiqm3lbkFcGpNNtVGlUD8Q_xxBt31Az044qJ3BYTcmnG1tXmjRzQNyNrGe3rnQxbnndqg1gHrr-st8bulgODHWGZ3vKkmpdXnMxAn6sYjPRZ0YOdfdQwpgYK8HpLh1oI8VtTsw8oqTiVXpk-4F00qXjqihVd66len-BS48DIsig",
+    user_language="FR",
+    user_account_identifier="0343500003",
+    partner_name="Marketbot",
+    transid="636251274" # Transaction ID [Required] Fields on details transaction   
+)
+res = api.details_transaction(transaction)
+if res.success :
+    print(res.response)
+else :
+    print(f"Status_code [{res.status_code}] \n {res.error}")
+```
+###### OUTPUT
+```python
+    {
+        'amount': '5555.00', 
+        'currency': 'Ar', 
+        'requestDate': '2022-06-01T19:15:52.848Z', 
+        'debitParty': 
+            [
+                {
+                    'key': 'msisdn', 
+                    'value': '0343500003'
+                }
+            ], 
+        'creditParty': 
+            [
+                {
+                    'key': 'msisdn', 
+                    'value': '0343500004'
+                }
+            ], 
+        'fees': 
+            [
+                {'feeAmount': '84'}
+            ], 
+        'metadata': 
+            [
+                {
+                    'key': 'originalTransactionResult', 
+                    'value': '0'
+                },
+                {
+                    'key': 'originalTransactionResultDesc', 
+                    'value': '0'
+                }
+            ], 
+        'transactionStatus': 'completed', 
+        'creationDate': '2022-06-01T19:07:24.223Z', 
+        'transactionReference': '636251282' , #This is the transaction ID
+    }
+
 ```
 
 ## How to contribute ?
