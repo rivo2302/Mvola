@@ -3,7 +3,6 @@
 import json
 import requests 
 import base64
-
 from .tools import ResultAction
 
 class Mvola :
@@ -11,13 +10,13 @@ class Mvola :
     def __init__(self,consumer_key:str,consumer_secret:str,status:str="SANDBOX",token:str=None) :
 
         """
-            An API that will make it easier for you to manage 
-            your Mvola API.
+                An API that will make it easier for you to manage 
+                your Mvola API.
 
-            Args:
-                consumer_key ( str ): Consumer key of the application's API
-                consumer_secret (str ): Consumer secret of the application's API
-                status (str, optional): The status of your API (SANDBOX : Developer Mode / PRODUCTION : Api deployé). Defaults to "SANDBOX".
+                Args:
+                    consumer_key ( str ): Consumer key of the application's API
+                    consumer_secret (str ): Consumer secret of the application's API
+                    status (str, optional): The status of your API (SANDBOX : Developer Mode / PRODUCTION : Api deployé). Defaults to "SANDBOX".
         """
         self.key = consumer_key
         self.secret = consumer_secret
@@ -69,9 +68,8 @@ class Mvola :
             res.error = req.json()
 
         res.status_code = req.status_code
-        return res
-        
-        
+        return res            
+  
     def init_transaction (self,transaction) :
 
         """
@@ -80,7 +78,6 @@ class Mvola :
             Args:
                 transaction ( object : Transaction ): An instance of Transaction class.
         """
-
         url = "https://devapi.mvola.mg/mvola/mm/transactions/type/merchantpay/1.0.0/"
         res = ResultAction()
         data = transaction.dataJson
@@ -169,3 +166,4 @@ class Mvola :
 
         res.status_code = req.status_code
         return res
+    
