@@ -15,17 +15,17 @@
         </h4>
     </p>
     <p>
-        <a href='#'> 
-            <img src='https://img.shields.io/badge/Maintained-Yes-darkgreen?style=for-the-badge'/>
-        </a>
-        <a href='https://pypi.org/project/mvola/'> 
-            <img src="https://img.shields.io/badge/-opensource-F9F63C?style=for-the-badge&logo=appveyor&logoColor=FFFFFF"/>
-        </a>
+        <a href='https://pypi.org/project/mvola/'><img src='https://img.shields.io/pypi/v/mvola?style=for-the-badge'/></a>
         <a href='https://github.com/rivo2302/Mvola'> 
             <img src="https://img.shields.io/badge/-python-396E9B?style=for-the-badge&logo=python&logoColor=FFFFFF"/>
         </a>
-            <a href='https://pypi.org/project/mvola/'><img src='https://img.shields.io/pypi/v/mvola?style=for-the-badge'/></a>
-        </p>
+        <a href='https://pypi.org/project/mvola/'> 
+             <img src='https://img.shields.io/pypi/dm/mvola?label=DOWNLOADS&style=for-the-badge'/>
+        </a>
+        <a href='#'> 
+            <img src='https://img.shields.io/badge/Maintained-Yes-darkgreen?style=for-the-badge'/>
+        </a>  
+    </p>
 </div>
 
 ## INSTALLATION
@@ -33,7 +33,7 @@
 You can consult the link on pypi.org <a href="https://pypi.org/project/mvola/">here</a> for mode documentation.
 
 ```s
-pip install mvola==1.0.2
+pip install mvola==1.0.3
 ```
 
 ## USAGE 
