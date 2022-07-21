@@ -3,14 +3,14 @@
 from mvola import Mvola
 from mvola.tools import Transaction
 
-api = Mvola("0zL7eTrSEfXf6kkwJ53DSegCbBwa","pd8PIZYmeZaafifZgwHu1BC5ucMa")
+api = Mvola("0zL7eTrSEfXf6kkwJ53DSegCbBwa", "pd8PIZYmeZaafifZgwHu1BC5ucMa")
 
 # GENERATE TOKEN
 res = api.generate_token()
-if res.success :
+if res.success:
     api.token = res
     print(res)
-else :
+else:
     print(f"Status_code[{res.status_code}] - {res.error}")
 
 # INITIATE TRANSACTION
@@ -19,7 +19,7 @@ transaction = Transaction(
     user_language="FR",
     user_account_identifier="0343500003",
     partner_name="Marketbot",
-    x_callback_url="https://a978-154-126-10-61.ngrok.io/",  
+    x_callback_url="https://a978-154-126-10-61.ngrok.io/",
     amount="5555",
     currency="Ar",
     original_transaction_reference="orgina",
@@ -27,12 +27,12 @@ transaction = Transaction(
     description_text="fevvs",
     request_date="2022-06-01T22:08:10.567Z",
     debit="0343500003",
-    credit="0343500004", 
+    credit="0343500004",
 )
 init = api.init_transaction(transaction)
-if init.success :
+if init.success:
     print(init.response)
-else :
+else:
     print(f"Status_code:[{init.status_code}] - {init.error}")
 
 # STATUS OF TRANSACTION
@@ -41,12 +41,12 @@ transaction = Transaction(
     user_language="FR",
     user_account_identifier="0343500003",
     partner_name="Marketbot",
-    server_correlation_id='72c5142d-5132-4f66-ac98-af905ba2c9ec'
+    server_correlation_id="72c5142d-5132-4f66-ac98-af905ba2c9ec",
 )
 res = api.status_transaction(transaction)
-if res.success :
+if res.success:
     print(res.response)
-else :
+else:
     print(f"Status_code [{res.status_code}] \n {res.error}")
 
 
@@ -56,10 +56,10 @@ transaction = Transaction(
     user_language="FR",
     user_account_identifier="0343500003",
     partner_name="Marketbot",
-    transid="636251274"
+    transid="636251274",
 )
 res = api.details_transaction(transaction)
-if res.success :
+if res.success:
     print(res.response)
-else :
+else:
     print(f"Status_code [{res.status_code}] \n {res.error}")

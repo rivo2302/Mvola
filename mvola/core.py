@@ -1,59 +1,62 @@
 # -*- coding: utf-8 -*-
 
 import json
-import requests 
+import requests
 import base64
 from .tools import ResultAction
 
-class Mvola :
 
-    def __init__(self,consumer_key:str,consumer_secret:str,status:str="SANDBOX",token:str=None) :
+class Mvola:
+    def __init__(
+        self,
+        consumer_key: str,
+        consumer_secret: str,
+        status: str = "SANDBOX",
+        token: str = None,
+    ):
 
         """
-                An API that will make it easier for you to manage 
-                your Mvola API.
+        An API that will make it easier for you to manage
+        your Mvola API.
 
-                Args:
-                    consumer_key ( str ): Consumer key of the application's API
-                    consumer_secret (str ): Consumer secret of the application's API
-                    status (str, optional): The status of your API (SANDBOX : Developer Mode / PRODUCTION : Api deployé). Defaults to "SANDBOX".
+        Args:
+            consumer_key ( str ): Consumer key of the application's API
+            consumer_secret (str ): Consumer secret of the application's API
+            status (str, optional): The status of your API (SANDBOX : Developer Mode / PRODUCTION : Api deployé). Defaults to "SANDBOX".
         """
         self.key = consumer_key
         self.secret = consumer_secret
         self.type = status
         self.token = token
-        
-        self.url = 'https://api.mvola.mg' if self.type == "PRODUCTION"  else "https://devapi.mvola.mg"
-    
-    def generate_token(self) :
+
+        self.url = (
+            "https://api.mvola.mg"
+            if self.type == "PRODUCTION"
+            else "https://devapi.mvola.mg"
+        )
+
+    def generate_token(self):
 
         """
 
         A function to generate a token for the Mvola API.
 
-        """    
+        """
 
-        url = f'{self.url}/token'        
+        url = f"{self.url}/token"
         keys = f"{self.key}:{self.secret}"
         keys_bytes = keys.encode("ascii")
-        encoded = base64.b64encode(keys_bytes).decode("utf-8") 
+        encoded = base64.b64encode(keys_bytes).decode("utf-8")
         headers = {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Cache-Control': 'no-cache',
-            'Authorization': f'Basic {encoded}'
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Cache-Control": "no-cache",
+            "Authorization": f"Basic {encoded}",
         }
-        data = {
-            'grant_type' : 'client_credentials',
-            'scope' : 'EXT_INT_MVOLA_SCOPE'
-        }
+        data = {"grant_type": "client_credentials", "scope": "EXT_INT_MVOLA_SCOPE"}
         res = ResultAction()
-        try :
-            req = requests.post(
-                url ,
-                headers=headers ,
-                data=data
-            )
-        except Exception as e :
+        try:
+            req = requests.post(url, headers=headers, data=data)
+        except Exception as e:
             res.error = e
             return res
         status_code = req.status_code
@@ -63,147 +66,172 @@ class Mvola :
             res.response = response
             res.response = response["access_token"]
 
-        elif status_code in range (500,504) :
-            res.error = {'error_description': 'Internal server errors.', 'error': 'server errors'}
+        elif status_code in range(500, 504):
+            res.error = {
+                "error_description": "Internal server errors.",
+                "error": "server errors",
+            }
 
-        else :
+        else:
             res.error = req.json()
 
         res.status_code = req.status_code
-        return res            
-  
-    def init_transaction (self,transaction) :
+        return res
+
+    def init_transaction(self, transaction):
 
         """
-            A method to calculate initiate a transaction with your Mvola API.   
+        A method to calculate initiate a transaction with your Mvola API.
 
-            Args:
-                transaction ( object : Transaction ): An instance of Transaction class.
+        Args:
+            transaction ( object : Transaction ): An instance of Transaction class.
         """
-        url = f'{self.url}/mvola/mm/transactions/type/merchantpay/1.0.0/'
+        url = f"{self.url}/mvola/mm/transactions/type/merchantpay/1.0.0/"
         res = ResultAction()
         data = transaction.dataJson
-        if not data.get("amount") :
+        if not data.get("amount"):
             raise ValueError("[amount] Required fields on action : init_transaction")
 
-        if not data.get("descriptionText") :
-            raise ValueError("[description_text] Required fields on action : init_transaction")
-        
-        if not data.get("requestDate") :
-            raise ValueError("[description_text] Required fields on action : init_transaction")
+        if not data.get("descriptionText"):
+            raise ValueError(
+                "[description_text] Required fields on action : init_transaction"
+            )
 
-        if not data["debitParty"][0].get("value") :
+        if not data.get("requestDate"):
+            raise ValueError(
+                "[description_text] Required fields on action : init_transaction"
+            )
+
+        if not data["debitParty"][0].get("value"):
             raise ValueError("[debit] Required fields on action : init_transaction")
 
-        if not data["creditParty"][0].get("value") :
+        if not data["creditParty"][0].get("value"):
             raise ValueError("[credit] Required fields on action : init_transaction")
 
-        if not data.get("originalTransactionReference") :
-            raise ValueError("[original_transaction_reference] Required fields on action : init_transaction")
+        if not data.get("originalTransactionReference"):
+            raise ValueError(
+                "[original_transaction_reference] Required fields on action : init_transaction"
+            )
 
         if not data.get("requestingOrganisationTransactionReference"):
-            raise ValueError("[requesting_organisation_transaction_reference] Required fields on acion : init_transaction")
+            raise ValueError(
+                "[requesting_organisation_transaction_reference] Required fields on acion : init_transaction"
+            )
 
         for k, v in dict(data).items():
-            if k not in ["amount","currency","descriptionText","requestDate","originalTransactionReference","debitParty","creditParty","metadata","requestingOrganisationTransactionReference"]:
+            if k not in [
+                "amount",
+                "currency",
+                "descriptionText",
+                "requestDate",
+                "originalTransactionReference",
+                "debitParty",
+                "creditParty",
+                "metadata",
+                "requestingOrganisationTransactionReference",
+            ]:
                 del data[k]
-        try :
-            req = requests.post(
-                url ,
-                headers=transaction.headers,
-                data=json.dumps(data)
-            )
-        except Exception as e :
+        try:
+            req = requests.post(url, headers=transaction.headers, data=json.dumps(data))
+        except Exception as e:
             res.error = e
             return res
         status_code = req.status_code
-        if status_code in [200 , 202]:
+        if status_code in [200, 202]:
             res.success = True
             response = req.json()
             res.response = response
-        elif status_code in range (500,504) :
-            res.error = {'error_description': 'Internal server errors.', 'error': 'server errors'}
-        else :
+        elif status_code in range(500, 504):
+            res.error = {
+                "error_description": "Internal server errors.",
+                "error": "server errors",
+            }
+        else:
             res.error = req.json()
         res.status_code = req.status_code
         return res
-        
-    def status_transaction(self,transaction) :
+
+    def status_transaction(self, transaction):
 
         """
-            Status of transaction
+        Status of transaction
 
-            Args:
-                transaction ( object : Transaction ): An instance of Transaction class.
+        Args:
+            transaction ( object : Transaction ): An instance of Transaction class.
         """
 
-        url = f'{self.url}/mvola/mm/transactions/type/merchantpay/1.0.0/status/'
+        url = f"{self.url}/mvola/mm/transactions/type/merchantpay/1.0.0/status/"
         res = ResultAction()
 
         data = transaction.dataJson
-        if not data.get("serverCorrelationId") :
-            raise ValueError("[server_correlation_id] Required fields on action : status_transaction")
-        
+        if not data.get("serverCorrelationId"):
+            raise ValueError(
+                "[server_correlation_id] Required fields on action : status_transaction"
+            )
+
         url = f"{url}/{data.get('serverCorrelationId')}"
-        try :
-            req = requests.get(
-                url ,
-                headers=transaction.headers
-            )
-        except Exception as e :
+        try:
+            req = requests.get(url, headers=transaction.headers)
+        except Exception as e:
             res.error = e
             return res
 
         status_code = req.status_code
-        if status_code in [200 , 202]:
+        if status_code in [200, 202]:
             res.success = True
             response = req.json()
             res.response = response
 
-        elif status_code in range (500,504) :
-            res.error = {'error_description': 'Internal server errors.', 'error': 'server errors'}
+        elif status_code in range(500, 504):
+            res.error = {
+                "error_description": "Internal server errors.",
+                "error": "server errors",
+            }
 
-        else :
+        else:
             res.error = req.json()
 
         res.status_code = req.status_code
         return res
-    
-    
-    def details_transaction(self,transaction) :
+
+    def details_transaction(self, transaction):
 
         """
-            details of transaction
+        details of transaction
 
-            Args:
-                transaction ( object : Transaction ): An instance of Transaction class.
+        Args:
+            transaction ( object : Transaction ): An instance of Transaction class.
         """
-        url = f'{self.url}/mvola/mm/transactions/type/merchantpay/1.0.0'
+        url = f"{self.url}/mvola/mm/transactions/type/merchantpay/1.0.0"
         res = ResultAction()
         data = transaction.dataJson
-        
-        if not data.get("transid") :
-            raise ValueError("[transid] Required fields on acion : details of transaction")
-        
-        try :
-            req = requests.get(
-                f'{url}/{data.get("transid")}',
-                headers=transaction.headers
+
+        if not data.get("transid"):
+            raise ValueError(
+                "[transid] Required fields on acion : details of transaction"
             )
-        except Exception as e :
+
+        try:
+            req = requests.get(
+                f'{url}/{data.get("transid")}', headers=transaction.headers
+            )
+        except Exception as e:
             res.error = e
             return res
 
         status_code = req.status_code
-        if status_code in [200 , 202]:
+        if status_code in [200, 202]:
             res.success = True
             response = req.json()
             res.response = response
 
-        elif status_code in range (500,504) :
-            res.error = {'error_description': 'Internal server errors.', 'error': 'server errors'}
+        elif status_code in range(500, 504):
+            res.error = {
+                "error_description": "Internal server errors.",
+                "error": "server errors",
+            }
 
-        else :
+        else:
             res.error = req.json()
 
         res.status_code = req.status_code
