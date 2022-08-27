@@ -5,13 +5,18 @@ from mvola.tools import Transaction
 from datetime import datetime
 import threading
 from time import sleep
+from dotenv import load_dotenv
+from os import environ
 
+load_dotenv()
 
-api = Mvola("0zL7eTrSEfXf6kkwJ53DSegCbBwa", "pd8PIZYmeZaafifZgwHu1BC5ucMa")
+api = Mvola(environ['CONSUMER_KEY'], environ['SECRET_KEY'])
 
 # GENERATE TOKEN
 res = api.generate_token()
+print(res.status_code)
 if res.success:
+    print(res.response)
     api.token = res.response
 else:
     print(f"Status_code[{res.status_code}] - {res.error}")
