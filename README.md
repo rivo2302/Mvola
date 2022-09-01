@@ -48,8 +48,15 @@ After you create application , you should have Consummer_key and Consummer_secre
 # Import the module mvola
 from mvola import Mvola
 
+# Import environ module to access environment variables
+from os import environ
+
+# Import and load the dotenv module to get environment variables from a .env file in order to avoid altering system environment variables
+from dotenv import load_dotenv
+load_dotenv()
+
 # Initiate the api => API(Consummer_key, Consummer_secret)
-api = Mvola("{{consummer_key}}","{{consummenr_secret}}")
+api = Mvola(environ['CONSUMER_KEY'], environ['SECRET_KEY'])
 ```
 
 ### Generate token
