@@ -13,7 +13,6 @@ class ResultAction:
     """
 
     def __init__(self) -> None:
-
         self.success = False  # True if the requests is success
         self.error = None  # Details if error occurs
         self.response = None  # Content of the request's response
@@ -71,33 +70,33 @@ class Transaction:
         self.transid = kwargs.get("transid")
 
         if not self.token:
-            raise ValueError(
-                "[token] Required fields | MerchantNumber: the company phone number ex : 0343500004"
-            )
+            raise ValueError(" Mvola Error  : [token] Required fields | Generate token")
 
         if not self.user_account_identifier:
-            raise ValueError("[user_account_identifier] Required field")
+            raise ValueError(
+                "  Mvola Error  :  [user_account_identifier] Required field"
+            )
 
         if self.user_language.upper() not in ("FR", "MG"):
-            raise ValueError("[user_language] FR or MG")
+            raise ValueError(" Mvola Error  : [user_language] FR or MG")
 
         if not self.partner_name:
-            raise ValueError("[partner_name] Required field")
+            raise ValueError(" Mvola Error  : [partner_name] Required field")
 
         if self.amount:
             if not str(self.amount).isdigit():
                 raise ValueError(
-                    "[Amount] of transaction without decimals ,example : 1000,20,15"
+                    " Mvola Error  : [Amount] of transaction without decimals ,example : 1000,20,15"
                 )
 
         if str(self.currency).capitalize() != "Ar":
             raise ValueError(
-                "[Currency] code of the transaction - Possible Values : Ar"
+                " Mvola Error  : [Currency] code of the transaction - Possible Values : Ar"
             )
 
         if re.match((r"^[0-9]{10}$"), self.user_account_identifier) is None:
             raise ValueError(
-                "[UserAccountIdentifier] MerchantNumber: the company phone number ex : 0343500004"
+                " Mvola Error  : [UserAccountIdentifier] MerchantNumber: the company phone number ex : 0343500004"
             )
 
         if self.description_text:
@@ -106,7 +105,7 @@ class Transaction:
                 is None
             ):
                 raise ValueError(
-                    "[description_text] on transaction. At most 50 characters long without special character except : “-”, “.”, “_”, “,”"
+                    " Mvola Error  : [description_text] on transaction. At most 50 characters long without special character except : “-”, “.”, “_”, “,”"
                 )
 
         if self.requesting_organisation_transaction_reference:
@@ -118,7 +117,7 @@ class Transaction:
                 is None
             ):
                 raise ValueError(
-                    "Transaction ID of client side. At most 50 characters long without special Character except : “-”, “.”, “_”, “,”"
+                    " Mvola Error  : Transaction ID of client side. At most 50 characters long without special Character except : “-”, “.”, “_”, “,”"
                 )
 
         if self.original_transaction_reference:
@@ -130,7 +129,7 @@ class Transaction:
                 is None
             ):
                 raise ValueError(
-                    "Transaction ID of client side. At most 50 characters long without special Character except : “-”, “.”, “_”, “,”"
+                    " Mvola Error  : Transaction ID of client side. At most 50 characters long without special Character except : “-”, “.”, “_”, “,”"
                 )
 
         if self.request_date:
@@ -144,19 +143,19 @@ class Transaction:
                 is None
             ):
                 raise ValueError(
-                    "[request_date]Transaction requested date by client - yyyy-MM-ddTHH:mm:ss.SSSZ format ,  example = 2022-05-05T21:14:59.567Z"
+                    " Mvola Error  : [request_date]Transaction requested date by client - yyyy-MM-ddTHH:mm:ss.SSSZ format ,  example = 2022-05-05T21:14:59.567Z"
                 )
 
         if self.debit:
             if re.match((r"^[0-9]{10}$"), self.debit) is None:
                 raise ValueError(
-                    "[Debit]Phone number of subscriber .In preprod it’s fixed: 034350003 or 0343500004"
+                    " Mvola Error  : [Debit]Phone number of subscriber .In preprod it’s fixed: 034350003 or 0343500004"
                 )
 
         if self.credit:
             if re.match((r"^[0-9]{10}$"), self.credit) is None:
                 raise ValueError(
-                    "[Credit]Phone number of merchant. In preprod it’s fixed: 034350003 or 0343500004"
+                    " Mvola Error  : [Credit]Phone number of merchant. In preprod it’s fixed: 034350003 or 0343500004"
                 )
 
     @property

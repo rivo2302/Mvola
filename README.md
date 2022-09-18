@@ -33,7 +33,7 @@
 You can consult the link on pypi.org <a href="https://pypi.org/project/mvola/">here</a> for mode documentation.
 
 ```s
-pip install mvola==1.0.3
+pip install mvola==1.0.4
 ```
 
 ## USAGE 
@@ -42,21 +42,19 @@ pip install mvola==1.0.3
 
 ### Start the API 
 Create your account <a href="https://www.mvola.mg/devportal/">here</a>.
-After you create application , you should have Consummer_key and Consummer_secret.
+After you create application , you should have Consummer_key and Consummer_secret and add those 
+variable in .env file(check the env file example).
 
 ```python
 # Import the module mvola
 from mvola import Mvola
 
 # Import environ module to access environment variables
-from os import environ
+from os import environ as env
 
-# Import and load the dotenv module to get environment variables from a .env file in order to avoid altering system environment variables
-from dotenv import load_dotenv
-load_dotenv()
 
 # Initiate the api => API(Consummer_key, Consummer_secret)
-api = Mvola(environ['CONSUMER_KEY'], environ['SECRET_KEY'])
+api = Mvola(env.get('CONSUMER_KEY'), env.get('SECRET_KEY'))
 ```
 
 ### Generate token
@@ -64,7 +62,8 @@ Check the documentation <a href="https://www.mvola.mg/devportal/apis/5fb6b560-ef
 
 ```python
 from mvola import Mvola
-api = Mvola("{{consummer_key}}","{{consummenr_secret}}")
+from os import environ as env
+api = Mvola(env.get('CONSUMER_KEY'), env.get('SECRET_KEY'))
 
 res = api.generate_token()
 if res.success :

@@ -14,7 +14,6 @@ class Mvola:
         status: str = "SANDBOX",
         token: str = None,
     ):
-
         """
         An API that will make it easier for you to manage
         your Mvola API.
@@ -36,13 +35,9 @@ class Mvola:
         )
 
     def generate_token(self):
-
         """
-
         A function to generate a token for the Mvola API.
-
         """
-
         url = f"{self.url}/token"
         keys = f"{self.key}:{self.secret}"
         keys_bytes = keys.encode("ascii")
@@ -65,24 +60,17 @@ class Mvola:
             response = req.json()
             res.response = response
             res.response = response["access_token"]
-
         elif status_code in range(500, 504):
-            res.error = {
-                "error_description": "Internal server errors.",
-                "error": "server errors",
-            }
-
+            res.error = {"description": "Internal Server error", "detail": req.text}
         else:
             res.error = req.json()
-
-        res.status_code = req.status_code
+        res.status_code = status_code
         return res
 
     def init_transaction(self, transaction):
 
         """
         A method to calculate initiate a transaction with your Mvola API.
-
         Args:
             transaction ( object : Transaction ): An instance of Transaction class.
         """
@@ -90,32 +78,38 @@ class Mvola:
         res = ResultAction()
         data = transaction.dataJson
         if not data.get("amount"):
-            raise ValueError("[amount] Required fields on action : init_transaction")
+            raise ValueError(
+                " Mvola Error  : [amount] Required fields on action : init_transaction"
+            )
 
         if not data.get("descriptionText"):
             raise ValueError(
-                "[description_text] Required fields on action : init_transaction"
+                " Mvola Error  : [description_text] Required fields on action : init_transaction"
             )
 
         if not data.get("requestDate"):
             raise ValueError(
-                "[description_text] Required fields on action : init_transaction"
+                " Mvola Error  : [description_text] Required fields on action : init_transaction"
             )
 
         if not data["debitParty"][0].get("value"):
-            raise ValueError("[debit] Required fields on action : init_transaction")
+            raise ValueError(
+                " Mvola Error  : [debit] Required fields on action : init_transaction"
+            )
 
         if not data["creditParty"][0].get("value"):
-            raise ValueError("[credit] Required fields on action : init_transaction")
+            raise ValueError(
+                " Mvola Error  : [credit] Required fields on action : init_transaction"
+            )
 
         if not data.get("originalTransactionReference"):
             raise ValueError(
-                "[original_transaction_reference] Required fields on action : init_transaction"
+                " Mvola Error  : [original_transaction_reference] Required fields on action : init_transaction"
             )
 
         if not data.get("requestingOrganisationTransactionReference"):
             raise ValueError(
-                "[requesting_organisation_transaction_reference] Required fields on acion : init_transaction"
+                " Mvola Error  : [requesting_organisation_transaction_reference] Required fields on acion : init_transaction"
             )
 
         for k, v in dict(data).items():
@@ -166,7 +160,7 @@ class Mvola:
         data = transaction.dataJson
         if not data.get("serverCorrelationId"):
             raise ValueError(
-                "[server_correlation_id] Required fields on action : status_transaction"
+                " Mvola Error  : [server_correlation_id] Required fields on action : status_transaction"
             )
 
         url = f"{url}/{data.get('serverCorrelationId')}"
@@ -208,7 +202,7 @@ class Mvola:
 
         if not data.get("transid"):
             raise ValueError(
-                "[transid] Required fields on acion : details of transaction"
+                " Mvola Error  : [transid] Required fields on acion : details of transaction"
             )
 
         try:
