@@ -9,8 +9,8 @@ from .tools import ResultAction
 class Mvola:
     def __init__(
         self,
-        consumer_key: str,
-        consumer_secret: str,
+        consumer_key: str = env.get("CONSUMER_KEY"),
+        consumer_secret: str = env.get("SECRET_KEY"),
         status: str = "SANDBOX",
         token: str = None,
     ):
@@ -23,6 +23,12 @@ class Mvola:
             consumer_secret (str ): Consumer secret of the application's API
             status (str, optional): The status of your API (SANDBOX : Developer Mode / PRODUCTION : Api deployé). Defaults to "SANDBOX".
         """
+
+        if not consumer_key:
+            raise Exception("Missing CONSUMER_KEY in env")
+        if not consumer_secret:
+            raise Exception("Missing SECRET_KEY in env")
+            
         self.key = consumer_key
         self.secret = consumer_secret
         self.type = status
