@@ -3,6 +3,7 @@
 import json
 import requests
 import base64
+from os import environ as env
 from .tools import ResultAction
 
 
@@ -28,7 +29,7 @@ class Mvola:
             raise Exception("Missing CONSUMER_KEY in env")
         if not consumer_secret:
             raise Exception("Missing SECRET_KEY in env")
-            
+
         self.key = consumer_key
         self.secret = consumer_secret
         self.type = status
