@@ -69,6 +69,9 @@ class Transaction:
         self.server_correlation_id = kwargs.get("server_correlation_id")
         self.transid = kwargs.get("transid")
 
+        telma_phone_number_pattern = r"^(034|038)\d{7}$"
+        generic_phone_number_pattern = r"^(03|03)\d{8}$"
+
         if not self.token:
             raise ValueError(" Mvola Error  : [token] Required fields | Generate token")
 
@@ -94,7 +97,7 @@ class Transaction:
                 " Mvola Error  : [Currency] code of the transaction - Possible Values : Ar"
             )
 
-        if re.match((r"^[0-9]{10}$"), self.user_account_identifier) is None:
+        if re.match((telma_phone_number_pattern), self.user_account_identifier) is None:
             raise ValueError(
                 " Mvola Error  : [UserAccountIdentifier] MerchantNumber: the company phone number ex : 0343500004"
             )
@@ -147,13 +150,13 @@ class Transaction:
                 )
 
         if self.debit:
-            if re.match((r"^[0-9]{10}$"), self.debit) is None:
+            if re.match((telma_phone_number_pattern), self.debit) is None:
                 raise ValueError(
                     " Mvola Error  : [Debit]Phone number of subscriber .In preprod it’s fixed: 034350003 or 0343500004"
                 )
 
         if self.credit:
-            if re.match((r"^[0-9]{10}$"), self.credit) is None:
+            if re.match((generic_phone_number_pattern), self.credit) is None:
                 raise ValueError(
                     " Mvola Error  : [Credit]Phone number of merchant. In preprod it’s fixed: 034350003 or 0343500004"
                 )
