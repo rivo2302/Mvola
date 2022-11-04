@@ -9,7 +9,8 @@ class ResultAction:
     """
     Result Action
 
-    The object to use for each API action (Generate token, Initiate transaction, status transaction,...)
+    The object to use for each API  action (Generate token, Initiate
+    transaction, status transaction,...)
     """
 
     def __init__(self) -> None:
@@ -43,7 +44,7 @@ class Transaction:
 
     def __init__(self, **kwargs):
 
-        # Headers
+        # Headers of the transaction
         self.correlation_id = str(uuid.uuid1())
         self.token = kwargs.get("token")
         self.user_language = kwargs.get("user_language", "FR")
@@ -73,7 +74,9 @@ class Transaction:
         generic_phone_number_pattern = r"^(03|03)\d{8}$"
 
         if not self.token:
-            raise ValueError(" Mvola Error  : [token] Required fields | Generate token")
+            raise ValueError(
+                " Mvola Error  : [token] Required fields | Generate token"
+            )
 
         if not self.user_account_identifier:
             raise ValueError(
@@ -89,76 +92,92 @@ class Transaction:
         if self.amount:
             if not str(self.amount).isdigit():
                 raise ValueError(
-                    " Mvola Error  : [Amount] of transaction without decimals ,example : 1000,20,15"
+                    " Mvola Error  : [Amount] of transaction without decimals"
+                    " ,example : 1000,20,15"
                 )
 
         if str(self.currency).capitalize() != "Ar":
             raise ValueError(
-                " Mvola Error  : [Currency] code of the transaction - Possible Values : Ar"
+                " Mvola Error  : [Currency] code of the transaction - Possible"
+                " Values : Ar"
             )
 
-        if re.match((telma_phone_number_pattern), self.user_account_identifier) is None:
+        if (
+            re.match(
+                (telma_phone_number_pattern), self.user_account_identifier
+            )
+            is None
+        ):
             raise ValueError(
-                " Mvola Error  : [UserAccountIdentifier] MerchantNumber: the company phone number ex : 0343500004"
+                " Mvola Error  : [UserAccountIdentifier] MerchantNumber: the"
+                " company phone number ex : 0343500004"
             )
 
         if self.description_text:
             if (
-                re.match((r"^[A-Za-z0-9_\-.,;\']{0,50}$"), self.description_text)
+                re.match(r"^[A-Za-z0-9_\-.,;\']{0,50}$", self.description_text)
                 is None
             ):
                 raise ValueError(
-                    " Mvola Error  : [description_text] on transaction. At most 50 characters long without special character except : “-”, “.”, “_”, “,”"
+                    " Mvola Error  : [description_text] on transaction. At"
+                    " most 50 characters long without special character except"
+                    " : “-”, “.”, “_”, “,”"
                 )
 
         if self.requesting_organisation_transaction_reference:
             if (
                 re.match(
-                    (r"^[A-Za-z0-9_\-.,;\']{0,50}$"),
+                    r"^[A-Za-z0-9_\-.,;\']{0,50}$",
                     self.requesting_organisation_transaction_reference,
                 )
                 is None
             ):
                 raise ValueError(
-                    " Mvola Error  : Transaction ID of client side. At most 50 characters long without special Character except : “-”, “.”, “_”, “,”"
+                    " Mvola Error  : Transaction ID of client side. At most 50"
+                    " characters long without special Character except : “-”,"
+                    " “.”, “_”, “,”"
                 )
 
         if self.original_transaction_reference:
             if (
                 re.match(
-                    (r"^[A-Za-z0-9_\-.,;\']{0,50}$"),
+                    r"^[A-Za-z0-9_\-.,;\']{0,50}$",
                     self.original_transaction_reference,
                 )
                 is None
             ):
                 raise ValueError(
-                    " Mvola Error  : Transaction ID of client side. At most 50 characters long without special Character except : “-”, “.”, “_”, “,”"
+                    " Mvola Error  : Transaction ID of client side. At most 50"
+                    " characters long without special Character except : “-”,"
+                    " “.”, “_”, “,”"
                 )
 
         if self.request_date:
             if (
                 re.match(
-                    (
-                        r"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{2,3}Z$"
-                    ),
+                    r"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{2,3}Z$",
                     self.request_date,
                 )
                 is None
             ):
                 raise ValueError(
-                    " Mvola Error  : [request_date]Transaction requested date by client - yyyy-MM-ddTHH:mm:ss.SSSZ format ,  example = 2022-05-05T21:14:59.567Z"
+                    " Mvola Error  : [request_date]Transaction requested date"
+                    " by client - yyyy-MM-ddTHH:mm:ss.SSSZ format ,  example ="
+                    " 2022-05-05T21:14:59.567Z"
                 )
 
         if self.debit:
             if re.match((telma_phone_number_pattern), self.debit) is None:
                 raise ValueError(
-                    " Mvola Error  : [Debit]Phone number of subscriber .In preprod it’s fixed: 034350003 or 0343500004"
+                    " Mvola Error  : [Debit]Phone number of subscriber .In"
+                    " preprod it’s fixed: 034350003 or 0343500004"
                 )
 
         if self.credit:
             if re.match((generic_phone_number_pattern), self.credit) is None:
                 raise ValueError(
-                    " Mvola Error  : [Credit]Phone number of merchant. In preprod it’s fixed: 034350003 or 0343500004"
+                    " Mvola Error  : [Credit]Phone number of merchant. In"
+                    " preprod it’s fixed: 034350003 or 0343500004"
                 )
 
     @property
@@ -172,7 +191,9 @@ class Transaction:
             "partnerName": self.partner_name,
             "Content-Type": "application/json",
             "Cache-Control": "no-cache",
-            "X-Callback-URL": str(self.x_callback_url) if self.x_callback_url else None,
+            "X-Callback-URL": str(self.x_callback_url)
+            if self.x_callback_url
+            else None,
         }
         for k, v in dict(data).items():
             if v is None:
@@ -192,20 +213,32 @@ class Transaction:
             )
             if self.requesting_organisation_transaction_reference
             else None,
-            "requestDate": str(self.request_date) if self.request_date else None,
-            "originalTransactionReference": str(self.original_transaction_reference)
+            "requestDate": str(self.request_date)
+            if self.request_date
+            else None,
+            "originalTransactionReference": str(
+                self.original_transaction_reference
+            )
             if self.original_transaction_reference
             else None,
             "debitParty": [
-                {"key": "msisdn", "value": str(self.debit) if self.debit else None}
+                {
+                    "key": "msisdn",
+                    "value": str(self.debit) if self.debit else None,
+                }
             ],
             "creditParty": [
-                {"key": "msisdn", "value": str(self.credit) if self.credit else None}
+                {
+                    "key": "msisdn",
+                    "value": str(self.credit) if self.credit else None,
+                }
             ],
             "metadata": [
                 {
                     "key": "partnerName",
-                    "value": str(self.partner_name) if self.partner_name else None,
+                    "value": str(self.partner_name)
+                    if self.partner_name
+                    else None,
                 },
                 {"key": "fc", "value": self.fc},
                 {"key": "amountFc", "value": self.amount_fc},

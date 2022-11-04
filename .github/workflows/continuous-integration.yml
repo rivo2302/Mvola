@@ -37,4 +37,4 @@ jobs:
 
     # Mvola devportal seems to be down and unstable for the moment
     # - name: Unit test
-    #  run: CONSUMER_KEY=${{secrets.CONSUMER_KEY}} SECRET_KEY=${{secrets.SECRET_KEY}} pytest
+    #  run: CONSUMER_KEY=${{secrets.CONSUMER_KEY}} SECRET_KEY=${{secrets.SECRET_KEY}} pytest --tb=short

@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="mvola",  # This is the name of the package
-    version="1.0.3",  # The initial release version
+    version="1.0.4",  # The initial release version
     author="rivo2302",  # Full name of the author
     description="Mvola is a light open source module for your Mvola API.",
     long_description=long_description,  # Long description read from the readme

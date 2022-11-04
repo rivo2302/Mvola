@@ -22,7 +22,8 @@ class Mvola:
         Args:
             consumer_key ( str ): Consumer key of the application's API
             consumer_secret (str ): Consumer secret of the application's API
-            status (str, optional): The status of your API (SANDBOX : Developer Mode / PRODUCTION : Api deployé). Defaults to "SANDBOX".
+            status (str, optional): The status of your API
+            (SANDBOX : Developer Mode / PRODUCTION : Api deployé)
         """
 
         if not consumer_key:
@@ -54,7 +55,10 @@ class Mvola:
             "Cache-Control": "no-cache",
             "Authorization": f"Basic {encoded}",
         }
-        data = {"grant_type": "client_credentials", "scope": "EXT_INT_MVOLA_SCOPE"}
+        data = {
+            "grant_type": "client_credentials",
+            "scope": "EXT_INT_MVOLA_SCOPE",
+        }
         res = ResultAction()
         try:
             req = requests.post(url, headers=headers, data=data)
@@ -68,7 +72,10 @@ class Mvola:
             res.response = response
             res.response = response["access_token"]
         elif status_code in range(500, 504):
-            res.error = {"description": "Internal Server error", "detail": req.text}
+            res.error = {
+                "description": "Internal Server error",
+                "detail": req.text,
+            }
         else:
             res.error = req.json()
         res.status_code = status_code
@@ -86,37 +93,45 @@ class Mvola:
         data = transaction.dataJson
         if not data.get("amount"):
             raise ValueError(
-                " Mvola Error  : [amount] Required fields on action : init_transaction"
+                " Mvola Error  : [amount] Required fields on action :"
+                " init_transaction"
             )
 
         if not data.get("descriptionText"):
             raise ValueError(
-                " Mvola Error  : [description_text] Required fields on action : init_transaction"
+                " Mvola Error  : [description_text] Required fields on action"
+                " : init_transaction"
             )
 
         if not data.get("requestDate"):
             raise ValueError(
-                " Mvola Error  : [description_text] Required fields on action : init_transaction"
+                " Mvola Error  : [description_text] Required fields on action"
+                " : init_transaction"
             )
 
         if not data["debitParty"][0].get("value"):
             raise ValueError(
-                " Mvola Error  : [debit] Required fields on action : init_transaction"
+                " Mvola Error  : [debit] Required fields on action :"
+                " init_transaction"
             )
 
         if not data["creditParty"][0].get("value"):
             raise ValueError(
-                " Mvola Error  : [credit] Required fields on action : init_transaction"
+                " Mvola Error  : [credit] Required fields on action :"
+                " init_transaction"
             )
 
         if not data.get("originalTransactionReference"):
             raise ValueError(
-                " Mvola Error  : [original_transaction_reference] Required fields on action : init_transaction"
+                " Mvola Error  : [original_transaction_reference] Required"
+                " fields on action : init_transaction"
             )
 
         if not data.get("requestingOrganisationTransactionReference"):
             raise ValueError(
-                " Mvola Error  : [requesting_organisation_transaction_reference] Required fields on acion : init_transaction"
+                " Mvola Error  :"
+                " [requesting_organisation_transaction_reference] Required"
+                " fields on acion : init_transaction"
             )
 
         for k, v in dict(data).items():
@@ -133,7 +148,9 @@ class Mvola:
             ]:
                 del data[k]
         try:
-            req = requests.post(url, headers=transaction.headers, data=json.dumps(data))
+            req = requests.post(
+                url, headers=transaction.headers, data=json.dumps(data)
+            )
         except Exception as e:
             res.error = e
             return res
@@ -161,13 +178,16 @@ class Mvola:
             transaction ( object : Transaction ): An instance of Transaction class.
         """
 
-        url = f"{self.url}/mvola/mm/transactions/type/merchantpay/1.0.0/status/"
+        url = (
+            f"{self.url}/mvola/mm/transactions/type/merchantpay/1.0.0/status/"
+        )
         res = ResultAction()
 
         data = transaction.dataJson
         if not data.get("serverCorrelationId"):
             raise ValueError(
-                " Mvola Error  : [server_correlation_id] Required fields on action : status_transaction"
+                " Mvola Error  : [server_correlation_id] Required fields on"
+                " action : status_transaction"
             )
 
         url = f"{url}/{data.get('serverCorrelationId')}"
@@ -209,7 +229,8 @@ class Mvola:
 
         if not data.get("transid"):
             raise ValueError(
-                " Mvola Error  : [transid] Required fields on acion : details of transaction"
+                " Mvola Error  : [transid] Required fields on acion : details"
+                " of transaction"
             )
 
         try:
