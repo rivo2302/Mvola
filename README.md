@@ -33,7 +33,7 @@
 You can consult the link on pypi.org <a href="https://pypi.org/project/mvola/">here</a> for mode documentation.
 
 ```s
-pip install mvola==1.0.4
+pip install mvola==1.0.5
 ```
 
 ## USAGE 
