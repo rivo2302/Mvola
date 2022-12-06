@@ -9,16 +9,19 @@ from os import environ as env
 import sys
 
 if env.get("CONSUMER_KEY") and env.get("SECRET_KEY"):
-    api = Mvola(env.get("CONSUMER_KEY"), env.get("SECRET_KEY"), status="SANDBOX")
+    api = Mvola(
+        env.get("CONSUMER_KEY"), env.get("SECRET_KEY"), status="SANDBOX"
+    )
 else:
-    print(" Mvola error : Verify if you have .env file <CONSUMER_KEY> and <SECRET_KEY>")
+    print(
+        " Mvola error : Verify if you have .env file <CONSUMER_KEY> and"
+        " <SECRET_KEY>"
+    )
     sys.exit()
 
 # GENERATE TOKEN
 res = api.generate_token()
-print(res.status_code)
 if res.success:
-    print(res.response)
     api.token = res.response
 else:
     print(f"Status_code[{res.status_code}] - {res.error}")
@@ -70,7 +73,9 @@ def notif_status(correlation_id):
     print(res.response["status"])
 
 
-x = threading.Thread(target=notif_status, args=(init.response["serverCorrelationId"],))
+x = threading.Thread(
+    target=notif_status, args=(init.response["serverCorrelationId"],)
+)
 x.start()
 
 # DETAILS OF  TRANSACTION

@@ -9,7 +9,7 @@ class ResultAction:
     """
     Result Action
 
-    The object to use for each API  action (Generate token, Initiate
+    The object to use for getting response of each API  action (Generate token, Initiate
     transaction, status transaction,...)
     """
 
@@ -52,7 +52,7 @@ class Transaction:
         self.partner_name = kwargs.get("partner_name")
         self.x_callback_url = kwargs.get("x_callback_url")
 
-        # Data Json
+        # Data
         self.amount = kwargs.get("amount")
         self.currency = kwargs.get("currency", "Ar")
         self.description_text = kwargs.get("description_text")
@@ -70,8 +70,11 @@ class Transaction:
         self.server_correlation_id = kwargs.get("server_correlation_id")
         self.transid = kwargs.get("transid")
 
+        # Check  if the number is really a Telma number
         telma_phone_number_pattern = r"^(034|038)\d{7}$"
-        generic_phone_number_pattern = r"^(03|03)\d{8}$"
+
+        # Patter for generic phone number
+        generic_phone_number_pattern = r"^(03)\d{8}$"
 
         if not self.token:
             raise ValueError(
@@ -109,8 +112,10 @@ class Transaction:
             is None
         ):
             raise ValueError(
-                " Mvola Error  : [UserAccountIdentifier] MerchantNumber: the"
-                " company phone number ex : 0343500004"
+                """
+                    Mvola Error  : [user_account_identifier] of the transaction check if 
+                    it is a valid Telma number , example : 0341234567
+                """
             )
 
         if self.description_text:
@@ -147,9 +152,11 @@ class Transaction:
                 is None
             ):
                 raise ValueError(
-                    " Mvola Error  : Transaction ID of client side. At most 50"
-                    " characters long without special Character except : “-”,"
-                    " “.”, “_”, “,”"
+                    """
+                    Mvola Error  : Transaction ID of client side. At most 50
+                    characters long without special Character except : “-”,
+                    " “.”, “_”, “,”
+                    """
                 )
 
         if self.request_date:
@@ -167,17 +174,21 @@ class Transaction:
                 )
 
         if self.debit:
-            if re.match((telma_phone_number_pattern), self.debit) is None:
+            if re.match((generic_phone_number_pattern), self.debit) is None:
                 raise ValueError(
-                    " Mvola Error  : [Debit]Phone number of subscriber .In"
-                    " preprod it’s fixed: 034350003 or 0343500004"
+                    """
+                    Mvola Error  : [Debit]Phone number of merchant. 
+                    Check if it is a valid number , example : 0341234567
+                    """
                 )
 
         if self.credit:
-            if re.match((generic_phone_number_pattern), self.credit) is None:
+            if re.match((telma_phone_number_pattern), self.credit) is None:
                 raise ValueError(
-                    " Mvola Error  : [Credit]Phone number of merchant. In"
-                    " preprod it’s fixed: 034350003 or 0343500004"
+                    """
+                    Mvola Error  : [Credit]Phone number of merchant. 
+                    Check if it is a valid Telma number , example : 0341234567
+                    """
                 )
 
     @property
