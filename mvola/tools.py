@@ -95,8 +95,8 @@ class Transaction:
         if self.amount:
             if not str(self.amount).isdigit():
                 raise ValueError(
-                    " Mvola Error  : [Amount] of transaction without decimals"
-                    " ,example : 1000,20,15"
+                    " Mvola Error  : [Amount] of transaction should not have decimals"
+                    " example : 1000 or 20 or 15"
                 )
 
         if str(self.currency).capitalize() != "Ar":
