@@ -105,7 +105,7 @@ class Mvola:
 
         if not data.get("requestDate"):
             raise ValueError(
-                " Mvola Error  : [description_text] Required fields on action"
+                " Mvola Error  : [request_date] Required fields on action"
                 " : init_transaction"
             )
 
@@ -131,7 +131,7 @@ class Mvola:
             raise ValueError(
                 " Mvola Error  :"
                 " [requesting_organisation_transaction_reference] Required"
-                " fields on acion : init_transaction"
+                " fields on action : init_transaction"
             )
 
         for k, v in dict(data).items():
